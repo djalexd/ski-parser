@@ -1,6 +1,10 @@
-<<<<<<< f0ea3164aeb2bccc65da09759b43a9490d73f560
 # ski-parser
-=======
 a set of very simple Python3 scripts that aggregate
 public data of ski resorts from bergfex.com
->>>>>>> first version
+
+## used variables
+* environment `GOOGLE_API_KEY` of a Google project that has Maps APIs enabled
+* for `parser.py` the first argument is considered origin (from) for the
+distance calculation.
+
+If any of these parameters are missing, the distance will be `0`.

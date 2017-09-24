@@ -89,6 +89,9 @@ def adjust(resort):
         return None, err, resort['url']
 
 def distance_from(origin, destination):
+    if 'GOOGLE_API_KEY' not in os.environ or origin is None:
+        return 0
+
     payload = {
         'origins': origin,
         'destinations': destination,
@@ -98,6 +101,7 @@ def distance_from(origin, destination):
     page = requests.get("https://maps.googleapis.com/maps/api/distancematrix/json", params=payload)
     results = page.json()
     return results['rows'][0]['elements'][0]['distance']['value'] / 1000
+
 
 with open('resorts.json') as input:
     resorts_results = [adjust(r) for r in json.load(input)]
@@ -119,8 +123,11 @@ with open('resorts.json') as input:
     print("Found %d resorts" % len(f))
     for resort in f:
         try:
-            from = os.environ['']
-            resort['distance_from_berlin'] = distance_from(sys.argv[1], resort['name'])
+            if len(sys.argv) > 1:
+                from = sys.argv[1]
+            else:
+                from = None
+            resort['distance_from_berlin'] = distance_from(from, resort['name'])
         except KeyError:
             resort['distance_from_berlin'] = 0.0
 
